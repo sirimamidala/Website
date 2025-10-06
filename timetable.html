@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Timetable - Student Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    td {
+      background-color: #ecf0f1;
+    }
+    .timetable-section {
+      display: none;
+      text-align: center;
+    }
+    .error-message {
+      color: red;
+      font-size: 16px;
+    }
+    .center {
+      text-align: center;
+    }
+    .checkbox-container {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📅 Select 5 Subjects for Your Timetable</h2>
+
+  <form id="subjectForm">
+    <div class="checkbox-container">
+      <label><input type="checkbox" name="subject" value="FAM"> FAM</label><br>
+      <label><input type="checkbox" name="subject" value="MAD"> MAD</label><br>
+      <label><input type="checkbox" name="subject" value="CRYPTOGRAPHY"> CRYPTOGRAPHY</label><br>
+      <label><input type="checkbox" name="subject" value="SPM"> SPM</label><br>
+      <label><input type="checkbox" name="subject" value="STM"> STM</label><br>
+      <label><input type="checkbox" name="subject" value="ATCD"> ATCD</label><br>
+      <label><input type="checkbox" name="subject" value="FIOT"> FIOT</label><br>
+      <label><input type="checkbox" name="subject" value="ML"> ML</label><br>
+      <label><input type="checkbox" name="subject" value="GERMAN"> GERMAN</label><br>
+    </div>
+
+    <button type="button" onclick="generateTimetable()">Generate Timetable</button>
+  </form>
+
+  <div id="timetable" class="timetable-section">
+    <h2>📅 Weekly Timetable</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>9:00–10:00</th>
+          <th>10:00–11:00</th>
+          <th>11:00–12:00</th>
+          <th>12:00–1:00</th>
+          <th>1:00–2:00</th>
+          <th>2:00–3:00</th>
+          <th>3:00–4:00</th>
+        </tr>
+      </thead>
+      <tbody id="timetableBody">
+        <!-- Timetable rows will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="error-message" id="errorMessage"></div>
+
+  <script>
+    const subjectsTimetable = {
+      "FAM": ["FAM", "SPM", "FAM", "SPM", "ML"],
+      "MAD": ["MAD", "FAM", "CRYPTOGRAPHY", "MAD", "SPM"],
+      "CRYPTOGRAPHY": ["CRYPTOGRAPHY", "FAM", "ATCD", "CRYPTOGRAPHY", "ML"],
+      "SPM": ["SPM", "ML", "FAM", "CRYPTOGRAPHY", "ATCD"],
+      "STM": ["STM", "ATCD", "ML", "FAM", "SPM"],
+      "ATCD": ["ATCD", "FIOT", "FAM", "STM", "CRYPTOGRAPHY"],
+      "FIOT": ["FIOT", "SPM", "GERMAN", "STM", "FAM"],
+      "ML": ["ML", "ATCD", "FAM", "ML", "FIOT"],
+      "GERMAN": ["GERMAN", "FIOT", "ML", "SPM", "CRYPTOGRAPHY"]
+    };
+
+    function generateTimetable() {
+      const selectedSubjects = Array.from(document.querySelectorAll('input[name="subject"]:checked')).map(input => input.value);
+      
+      // Validate that exactly 5 subjects are selected
+      if (selectedSubjects.length !== 5) {
+        document.getElementById("errorMessage").textContent = "Please select exactly 5 subjects.";
+        document.getElementById("timetable").style.display = "none"; // Hide timetable if error
+        return;
+      } else {
+        document.getElementById("errorMessage").textContent = ""; // Clear any error message
+      }
+
+      const timetableBody = document.getElementById("timetableBody");
+      timetableBody.innerHTML = ""; // Reset timetable
+
+      const timetable = {
+        "Monday": [],
+        "Tuesday": [],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": []
+      };
+
+      // Populate timetable with selected subjects
+      selectedSubjects.forEach(subject => {
+        for (let day in timetable) {
+          timetable[day].push(subjectsTimetable[subject].shift() || "Training");
+        }
+      });
+
+      // Render timetable table rows
+      for (let day in timetable) {
+        let row = `<tr><td>${day}</td>`;
+        timetable[day].forEach(subject => {
+          row += `<td>${subject}</td>`;
+        });
+        row += "</tr>";
+        timetableBody.innerHTML += row;
+      }
+
+      // Show timetable section
+      document.getElementById("timetable").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
+

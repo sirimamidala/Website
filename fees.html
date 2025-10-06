@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Fee Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      padding: 8px;
+      margin: 10px 0;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #2980b9;
+      color: white;
+    }
+
+    .paid {
+      color: green;
+      font-weight: bold;
+    }
+
+    .due {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>📋 Admin Panel: Student Fee Status</h2>
+
+    <label for="branchFilter">Filter by Branch:</label>
+    <select id="branchFilter" onchange="filterTable()">
+      <option value="all">All Branches</option>
+      <option value="CSE">CSE</option>
+      <option value="ECE">ECE</option>
+      <option value="MECH">MECH</option>
+      <option value="CIVIL">CIVIL</option>
+      <option value="IT">IT</option>
+    </select>
+
+    <input type="text" id="searchInput" placeholder="Search by Student Name or ID" onkeyup="filterTable()"/>
+
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Branch</th>
+          <th>Total Fee</th>
+          <th>Paid</th>
+          <th>Due</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const students = [
+      { id: "S101", name: "Aarav Kumar", branch: "CSE", total: 72000, paid: 60000 },
+      { id: "S102", name: "Sneha Verma", branch: "CSE", total: 72000, paid: 72000 },
+      { id: "S201", name: "Rahul Mehta", branch: "ECE", total: 69500, paid: 50000 },
+      { id: "S301", name: "Pooja Rani", branch: "MECH", total: 67500, paid: 67500 },
+      { id: "S401", name: "Nikhil Joshi", branch: "IT", total: 69200, paid: 55000 },
+      { id: "S501", name: "Anjali Sharma", branch: "CIVIL", total: 64500, paid: 64500 },
+    ];
+
+    function displayTable(data) {
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = "";
+
+      data.forEach(s => {
+        const due = s.total - s.paid;
+        const row = `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.branch}</td>
+            <td>₹${s.total.toLocaleString()}</td>
+            <td>₹${s.paid.toLocaleString()}</td>
+            <td>₹${due.toLocaleString()}</td>
+            <td class="${due > 0 ? 'due' : 'paid'}">${due > 0 ? 'Due' : 'Paid'}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function filterTable() {
+      const branch = document.getElementById("branchFilter").value;
+      const search = document.getElementById("searchInput").value.toLowerCase();
+
+      const filtered = students.filter(s => {
+        const matchBranch = branch === "all" || s.branch === branch;
+        const matchSearch = s.name.toLowerCase().includes(search) || s.id.toLowerCase().includes(search);
+        return matchBranch && matchSearch;
+      });
+
+      displayTable(filtered);
+    }
+
+    // Initial display
+    displayTable(students);
+  </script>
+
+</body>
+</html>

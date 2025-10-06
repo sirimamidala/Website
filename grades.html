@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grades - Student Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .pending {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📊 Grades / Results</h2>
+  <p><strong>Note:</strong> Marks will be visible only after faculty input. Until then, fields remain pending.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Internal Marks (30)</th>
+        <th>External Marks (70)</th>
+        <th>Total</th>
+        <th>Grade</th>
+        <th>GPA Points</th>
+      </tr>
+    </thead>
+    <tbody id="gradesTable">
+      <!-- Dynamically filled -->
+    </tbody>
+  </table>
+
+  <script>
+    // Mock faculty-entered marks (use real backend in production)
+    const facultyMarks = {
+      "FAM": { internal: 25, external: 55 },
+      "MAD": { internal: 28, external: 60 },
+      "CRYPTOGRAPHY": { internal: 27, external: 62 }
+    };
+
+    function calculateGrade(total) {
+      if (total >= 90) return { grade: 'A+', gpa: 10 };
+      if (total >= 80) return { grade: 'A', gpa: 9 };
+      if (total >= 70) return { grade: 'B+', gpa: 8 };
+      if (total >= 60) return { grade: 'B', gpa: 7 };
+      if (total >= 50) return { grade: 'C', gpa: 6 };
+      return { grade: 'F', gpa: 0 };
+    }
+
+    function displayGrades() {
+      const enrolledCourses = JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+      const table = document.getElementById("gradesTable");
+      table.innerHTML = "";
+
+      if (enrolledCourses.length === 0) {
+        table.innerHTML = '<tr><td colspan="6">No courses enrolled. Please register first.</td></tr>';
+        return;
+      }
+
+      enrolledCourses.forEach(subject => {
+        const marks = facultyMarks[subject]; // simulate fetching marks
+        let row = "<tr>";
+        row += `<td>${subject}</td>`;
+
+        if (marks) {
+          const total = marks.internal + marks.external;
+          const gradeObj = calculateGrade(total);
+          row += `<td>${marks.internal}</td>`;
+          row += `<td>${marks.external}</td>`;
+          row += `<td>${total}</td>`;
+          row += `<td>${gradeObj.grade}</td>`;
+          row += `<td>${gradeObj.gpa}</td>`;
+        } else {
+          row += `<td class="pending">Pending</td>`;
+          row += `<td class="pending">Pending</td>`;
+          row += `<td class="pending">-</td>`;
+          row += `<td class="pending">-</td>`;
+          row += `<td class="pending">-</td>`;
+        }
+
+        row += "</tr>";
+        table.innerHTML += row;
+      });
+    }
+
+    window.onload = displayGrades;
+  </script>
+
+</body>
+</html>

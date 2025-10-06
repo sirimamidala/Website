@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignments - Student Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #2f3640;
+      margin-bottom: 20px;
+    }
+
+    .assignment-form, .assignment-list {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #00a8ff;
+      color: white;
+    }
+
+    .download-btn {
+      background-color: #44bd32;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📚 Assignment Upload (Faculty)</h2>
+
+  <div class="assignment-form">
+    <form id="uploadForm">
+      <label for="subject">Subject</label>
+      <select id="subject" required>
+        <option value="">--Select Subject--</option>
+        <option value="FAM">FAM</option>
+        <option value="MAD">MAD</option>
+        <option value="CRYPTOGRAPHY">CRYPTOGRAPHY</option>
+        <option value="SPM">SPM</option>
+        <option value="STM">STM</option>
+        <option value="ATCD">ATCD</option>
+        <option value="FIOT">FIOT</option>
+        <option value="ML">ML</option>
+        <option value="GERMAN">GERMAN</option>
+      </select>
+
+      <label for="title">Assignment Title</label>
+      <input type="text" id="title" required>
+
+      <label for="deadline">Deadline</label>
+      <input type="date" id="deadline" required>
+
+      <label for="file">Upload File</label>
+      <input type="file" id="file" required>
+
+      <button type="submit">Upload Assignment</button>
+    </form>
+  </div>
+
+  <h2>📄 Posted Assignments</h2>
+
+  <div class="assignment-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Title</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody id="assignmentTable">
+        <!-- Dynamic rows will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const uploadForm = document.getElementById('uploadForm');
+    const assignmentTable = document.getElementById('assignmentTable');
+
+    uploadForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const subject = document.getElementById('subject').value;
+      const title = document.getElementById('title').value;
+      const deadline = document.getElementById('deadline').value;
+
+      if (!subject || !title || !deadline) {
+        alert('Please fill all fields.');
+        return;
+      }
+
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${subject}</td>
+        <td>${title}</td>
+        <td>${deadline}</td>
+        <td><span style="color: red;">Pending</span></td>
+        <td><a href="#" class="download-btn" onclick="alert('This is a mock download');">Download</a></td>
+      `;
+
+      assignmentTable.appendChild(newRow);
+
+      uploadForm.reset();
+    });
+  </script>
+
+</body>
+</html>

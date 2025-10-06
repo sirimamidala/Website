@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subject-wise Attendance Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2d3436;
+    }
+    label {
+      display: block;
+      margin: 8px 0;
+    }
+    .btn {
+      background-color: #0984e3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .btn:hover {
+      background-color: #74b9ff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #0984e3;
+      color: white;
+    }
+    .percentage {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🎓 Select Your 5 Subjects</h2>
+  <form id="subjectForm">
+    <label><input type="checkbox" name="subject" value="FAM"> FAM</label>
+    <label><input type="checkbox" name="subject" value="MAD"> MAD</label>
+    <label><input type="checkbox" name="subject" value="GERMAN"> GERMAN</label>
+    <label><input type="checkbox" name="subject" value="CRYPTOGRAPHY"> CRYPTOGRAPHY</label>
+    <label><input type="checkbox" name="subject" value="SPM"> SPM</label>
+    <label><input type="checkbox" name="subject" value="STM"> STM</label>
+    <label><input type="checkbox" name="subject" value="ATCD"> ATCD</label>
+    <label><input type="checkbox" name="subject" value="FIOT"> FIOT</label>
+    <label><input type="checkbox" name="subject" value="ML"> ML</label>
+    <label><input type="checkbox" name="subject" value="AL"> AL</label>
+    <label><input type="checkbox" name="subject" value="DSA"> DSA</label>
+    <label><input type="checkbox" name="subject" value="IOT"> IOT</label>
+    <label><input type="checkbox" name="subject" value="MATHS"> MATHS</label>
+    <label><input type="checkbox" name="subject" value="ENGLISH"> ENGLISH</label>
+    <label><input type="checkbox" name="subject" value="CLOUD"> CLOUD</label>
+
+    <button class="btn" type="button" onclick="loadAttendance()">Submit Subjects</button>
+  </form>
+
+  <div id="attendanceSection"></div>
+</div>
+
+<script>
+  let attendanceData = {};
+
+  function loadAttendance() {
+    const checked = document.querySelectorAll('input[name="subject"]:checked');
+    if (checked.length > 5) {
+      alert("Please select only 5 subjects.");
+      return;
+    } else if (checked.length < 5) {
+      alert("Please select 5 subjects.");
+      return;
+    }
+
+    document.getElementById('subjectForm').style.display = 'none';
+
+    const container = document.getElementById('attendanceSection');
+    container.innerHTML = `<h2>📊 Subject-wise Attendance</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Mark Present</th>
+            <th>Total</th>
+            <th>Present</th>
+            <th>Attendance %</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTable"></tbody>
+      </table>`;
+
+    const tbody = document.getElementById('attendanceTable');
+    checked.forEach(cb => {
+      const subject = cb.value;
+      attendanceData[subject] = { total: 0, present: 0 };
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${subject}</td>
+        <td><button class="btn" onclick="markPresent('${subject}', this)">Present</button></td>
+        <td class="total">0</td>
+        <td class="present">0</td>
+        <td class="percentage">0%</td>`;
+      tbody.appendChild(row);
+    });
+  }
+
+  function markPresent(subject, btn) {
+    const row = btn.closest('tr');
+    const totalCell = row.querySelector('.total');
+    const presentCell = row.querySelector('.present');
+    const percentCell = row.querySelector('.percentage');
+
+    attendanceData[subject].total++;
+    attendanceData[subject].present++;
+
+    totalCell.textContent = attendanceData[subject].total;
+    presentCell.textContent = attendanceData[subject].present;
+    const percent = ((attendanceData[subject].present / attendanceData[subject].total) * 100).toFixed(1);
+    percentCell.textContent = percent + '%';
+  }
+</script>
+
+</body>
+</html>

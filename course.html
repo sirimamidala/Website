@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Portal - Course Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      height: 100vh;
+      padding-top: 20px;
+      position: fixed;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #1abc9c;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 20px;
+      width: 100%;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2 style="text-align:center;">Portal</h2>
+    <a href="#" onclick="showTab('courses')">📘 Course Registration</a>
+    <a href="siri.html">🏠 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <!-- Add more links as needed -->
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Course Registration Tab -->
+    <div id="courses" class="tab-content active">
+      <h2>📘 Course Registration</h2>
+      <form id="courseForm">
+    <label><input type="checkbox" name="courses" value="FAM"> FAM - Financial and Accounting Management</label><br>
+    <label><input type="checkbox" name="courses" value="MAD"> MAD - Mobile Application Development</label><br>
+    <label><input type="checkbox" name="courses" value="GERMAN"> GERMAN - German Language</label><br>
+    <label><input type="checkbox" name="courses" value="CRYPTOGRAPHY"> CRYPTOGRAPHY - Cryptography & Network Security</label><br>
+    <label><input type="checkbox" name="courses" value="SPM"> SPM - Software Project Management</label><br>
+    <label><input type="checkbox" name="courses" value="ATCD"> ATCD - Advanced Topics in Cloud & DevOps</label><br>
+    <label><input type="checkbox" name="courses" value="FIOT"> FIOT - Fundamentals of IoT</label><br>
+    <label><input type="checkbox" name="courses" value="ML"> ML - Machine Learning</label><br>
+    <label><input type="checkbox" name="courses" value="AL"> AL - Applied Linear Algebra</label><br>
+    <label><input type="checkbox" name="courses" value="DSA"> DSA - Data Structures and Algorithms</label><br>
+    <label><input type="checkbox" name="courses" value="DBMS"> DBMS - Database Management Systems</label><br>
+    <label><input type="checkbox" name="courses" value="OS"> OS - Operating Systems</label><br>
+    <label><input type="checkbox" name="courses" value="CN"> CN - Computer Networks</label><br>
+    <label><input type="checkbox" name="courses" value="SE"> SE - Software Engineering</label><br>
+    <label><input type="checkbox" name="courses" value="AI"> AI - Artificial Intelligence</label><br>
+    <label><input type="checkbox" name="courses" value="DM"> DM - Data Mining</label><br>
+    <label><input type="checkbox" name="courses" value="NLP"> NLP - Natural Language Processing</label><br>
+    <label><input type="checkbox" name="courses" value="BC"> BC - Blockchain Technologies</label><br>
+    <label><input type="checkbox" name="courses" value="DS"> DS - Data Science</label><br>
+    <label><input type="checkbox" name="courses" value="DAA"> DAA - Design and Analysis of Algorithms</label><br>
+    <label><input type="checkbox" name="courses" value="IOT"> IOT - Internet of Things</label><br>
+    <label><input type="checkbox" name="courses" value="VR"> VR - Virtual Reality</label><br>
+    <label><input type="checkbox" name="courses" value="AR"> AR - Augmented Reality</label><br>
+    <label><input type="checkbox" name="courses" value="CC"> CC - Cloud Computing</label><br><br>
+
+    <button type="submit">Enroll</button>
+  </form>
+
+  <div id="enrolledCourses" style="margin-top:20px;">
+    <h4>📋 Enrolled Courses:</h4>
+    <ul id="courseList"></ul>
+  </div>
+</div> 
+<script>
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    const maxCourses = 5;
+
+    document.querySelectorAll('input[name="courses"]').forEach(cb => {
+      cb.addEventListener('change', function () {
+        const selected = document.querySelectorAll('input[name="courses"]:checked');
+        if (selected.length > maxCourses) {
+          this.checked = false;
+          alert(`You can only select up to ${maxCourses} courses.`);
+        }
+      });
+    });
+
+    document.getElementById("courseForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const selectedCourses = Array.from(document.querySelectorAll('input[name="courses"]:checked')).map(c => c.value);
+      if (selectedCourses.length > maxCourses) {
+        alert(`Please select only ${maxCourses} courses.`);
+        return;
+      }
+      localStorage.setItem("enrolledCourses", JSON.stringify(selectedCourses));
+      updateCourseList();
+    });
+
+    function updateCourseList() {
+      const list = document.getElementById("courseList");
+      list.innerHTML = "";
+      const courses = JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+      if (courses.length === 0) {
+        list.innerHTML = "<li>No courses enrolled yet.</li>";
+      } else {
+        courses.forEach(course => {
+          const li = document.createElement("li");
+          li.textContent = course;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    window.onload = updateCourseList;
+  </script>
+</body>
+</html>
+
+

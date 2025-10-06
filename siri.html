@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; }
+    header { background: #004080; color: white; padding: 15px; width: 100%; text-align: center; }
+    .sidebar {
+      width: 250px;
+      background: #2f3b52;
+      color: white;
+      position: fixed;
+      height: 100%;
+      top: 0;
+      left: 0;
+      padding-top: 30px;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .sidebar a:hover { background-color: #575d6d; }
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      width: 100%;
+    }
+    .hidden { display: none; }
+    .tabs { display: flex; margin-top: 20px; }
+    .tabs button {
+      background-color: #004080;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    .tabs button:hover { background-color: #575d6d; }
+    .container { padding: 20px; }
+    form input, form select, form textarea { display: block; margin: 10px 0; padding: 8px; width: 100%; }
+    button { padding: 10px 20px; background: #004080; color: white; border: none; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table, th, td { border: 1px solid #aaa; }
+    th, td { padding: 10px; text-align: left; }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2 style="color: white; text-align: center;">Student Portal</h2>
+      <a href="basic.html" class="list-group-item list-group-item-action active">Dashboard</a>
+      <a href="profile.html" class="list-group-item list-group-item-action">Student profile</a>
+      <a href="course.html" class="list-group-item list-group-item-action">Course Registration</a>
+      <a href="grades.html" class="list-group-item list-group-item-action">Grades</a>
+      <a href="timetable.html" class="list-group-item list-group-item-action">Timetable</a>
+      <a href="assignments.html" class="list-group-item list-group-item-action">Assignments</a>
+      <a href="announcements.html" class="list-group-item list-group-item-action">Announcements</a>
+      <a href="attendence.html" class="list-group-item list-group-item-action">Attendance</a>
+      <a href="fees.html" class="list-group-item list-group-item-action">Fee Management</a>
+      <a href="javascript:void(0)" id="logoutTab" onclick="logout()">Logout</a>
+
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content">
+  <header>
+    <h1>Welcome to the SR COLLEGE Student Portal</h1>
+       </header>
+   <div>
+      <h3><p>This portal allows college students to register their personal details, manage their profile, and stay connected. Please use the form below to sign up and complete your profile.</p></h3>
+    <h3><p>Welcome! Use the navigation on the left to explore your portal.</p></h3>
+   </div>
+  <div class="container" id="home">
+      </div>
+
+  <!-- Profile Form Section -->
+  <div class="container hidden" id="profileFormSection">
+    <h2>Enter Student Details</h2>
+    <form id="studentForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="text" id="studentId" placeholder="Student ID" required />
+      <input type="date" id="dob" required />
+      <select id="gender">
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="text" id="department" placeholder="Department" required />
+      <input type="text" id="year" placeholder="Year of Study" required />
+      <textarea id="address" placeholder="Address" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div class="container hidden" id="dashboardSection">
+    <div class="tabs">
+      <button onclick="showTab('dashboard')">Dashboard</button>
+      <button onclick="showTab('profile')">Profile</button>
+      <button onclick="showTab('grades')">Grades</button>
+      <button onclick="showTab('attendance')">Attendance</button>
+      <button onclick="showTab('assignments')">Assignments</button>
+    </div>
+    <h2>Welcome, <span id="dispName">Student</span></h2>
+    <div id="dashboard" class="tab-content">
+      <h3>📄 Student Profile Summary</h3>
+      <table>
+        <tbody id="profileData"></tbody>
+      </table>
+    </div>
+    <div id="profile" class="tab-content hidden">
+      <h3>Your Profile</h3>
+      <!-- Profile data or editable fields can go here -->
+    </div>
+    <div id="grades" class="tab-content hidden">
+      <h3>Your Grades</h3>
+      <!-- Grade details can go here -->
+    </div>
+    <div id="attendance" class="tab-content hidden">
+      <h3>Your Attendance</h3>
+      <!-- Attendance details can go here -->
+    </div>
+    <div id="assignments" class="tab-content hidden">
+      <h3>Your Assignments</h3>
+      <!-- Assignment details can go here -->
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("profileFormSection").classList.remove("hidden");
+  });
+
+  document.getElementById("studentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const student = {
+      name: document.getElementById("name").value,
+      studentId: document.getElementById("studentId").value,
+      dob: document.getElementById("dob").value,
+      gender: document.getElementById("gender").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      department: document.getElementById("department").value,
+      year: document.getElementById("year").value,
+      address: document.getElementById("address").value,
+    };
+    localStorage.setItem("student", JSON.stringify(student));
+    loadDashboard();
+  });
+
+  function loadDashboard() {
+    const student = JSON.parse(localStorage.getItem("student"));
+    if (!student) return;
+
+    document.getElementById("profileFormSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+    document.getElementById("dispName").innerText = student.name;
+
+    let profileHTML = "";
+    for (let key in student) {
+      profileHTML += `<tr><td><strong>${key}</strong></td><td>${student[key]}</td></tr>`;
+    }
+    document.getElementById("profileData").innerHTML = profileHTML;
+    showTab('dashboard'); // Set the first tab as default
+  }
+
+  function showTab(tab) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(t => t.classList.add('hidden'));
+    document.getElementById(tab).classList.remove('hidden');
+  }
+
+  function logout() {
+    localStorage.clear();
+    document.getElementById("dashboardSection").classList.add("hidden");
+    document.getElementById("home").classList.remove("hidden");
+  }

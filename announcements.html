@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notices & Announcements - Student Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #2d3436;
+      margin-bottom: 20px;
+    }
+
+    .announcement {
+      background-color: #dfe6e9;
+      border-left: 6px solid #0984e3;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .announcement:hover {
+      background-color: #d0d8df;
+    }
+
+    .announcement h4 {
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #2d3436;
+    }
+
+    .details {
+      margin-top: 10px;
+      display: none;
+      color: #636e72;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .date {
+      font-size: 0.85em;
+      color: #636e72;
+    }
+
+    .active .details {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>📢 Latest Notices & Announcements</h2>
+
+    <div class="announcement" onclick="toggleDetails(this)">
+      <h4>
+        Semester Exams Start <span class="date">📅 2025-06-12</span>
+      </h4>
+      <div class="details">
+        <p>Semester-end exams will begin from June 12. Hall tickets will be issued by June 5. Exam schedule will be available in the Timetable section.</p>
+      </div>
+    </div>
+
+    <div class="announcement" onclick="toggleDetails(this)">
+      <h4>
+        Holiday Notice <span class="date">📅 2025-05-10</span>
+      </h4>
+      <div class="details">
+        <p>The college will remain closed on May 10 for a public holiday. Regular classes will resume on May 11.</p>
+      </div>
+    </div>
+
+    <div class="announcement" onclick="toggleDetails(this)">
+      <h4>
+        Guest Lecture on AI <span class="date">📅 2025-05-15</span>
+      </h4>
+      <div class="details">
+        <p>An expert from the AI industry will conduct a seminar on May 15 in Hall B1 at 11 AM. All students are encouraged to attend.</p>
+      </div>
+    </div>
+
+    <div class="announcement" onclick="toggleDetails(this)">
+      <h4>
+        Cultural Fest Registrations <span class="date">📅 2025-05-08</span>
+      </h4>
+      <div class="details">
+        <p>Students can now register for "COLLAGE-THON 2025". Deadline is May 20. Visit the Events section for registration link and full schedule.</p>
+      </div>
+    </div>
+
+    <div class="announcement" onclick="toggleDetails(this)">
+      <h4>
+        Internal Marks Published <span class="date">📅 2025-05-03</span>
+      </h4>
+      <div class="details">
+        <p>Internal marks for the current semester are now available in the Grades section. Contact your faculty in case of discrepancies.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleDetails(element) {
+      element.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
+
